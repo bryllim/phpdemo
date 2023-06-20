@@ -13,19 +13,62 @@
             <input id="todoInput" class="form-control" type="text" placeholder="Add a todo item here...">
             <button type="submit" class="btn btn-primary mt-2">Add</button>
         </form>
-        <ul id="todoList" class="list-group">
-        </ul>
+        <main class="container p-1" id="todoList">
+        </main>
     </main>
 
     <script>
+
+        // Fetch and diplay existing todos
+        fetchTodoItems();
+
+        // Add event listener to the form
+        const todoForm = document.querySelector('#todoForm');
+        todoForm.addEventListener('submit', handleSubmit);
+
+
         // Function to handle form submission
         function handleSubmit(event) {
-            
+            event.preventDefault(); // prevent default event
+
+            const todoInput = document.getElementById("todoInput");
+            const todoText = todoInput.value;
+
+            if(todoText !== ""){
+                // Send a POST request to the endpoint
+                fetch('http://localhost:8888/kodego/newtodo.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({title: todoText})
+                })
+                .then(response => {
+                    todoInput.value = "";
+                    fetchTodoItems();
+                });
+            }else{
+                alert("Field cannot be empty!");
+            }
         }
 
         // Function to fetch and display all todo items
         function fetchTodoItems() {
-            
+            // Fetch the todo items from the endpoint
+            fetch('http://localhost:8888/kodego/fetchtodos.php')
+            .then(response => response.json())
+            .then(data => {
+                
+                const todoList = document.getElementById('todoList');
+                todoList.innerHTML = ''; // Clear the todo list
+
+                data.forEach(todoItem => {
+                    todoList.innerHTML += `<div class="alert alert-light">
+                                    ${todoItem.title}
+                                </div>`;
+                });
+
+            });
         }
     </script>
 </body>
