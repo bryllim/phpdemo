@@ -19,6 +19,8 @@
 
     <script>
 
+        const URL = 'http://localhost:8888/kodego/';
+
         // Fetch and diplay existing todos
         fetchTodoItems();
 
@@ -36,7 +38,7 @@
 
             if(todoText !== ""){
                 // Send a POST request to the endpoint
-                fetch('http://localhost:8888/kodego/newtodo.php', {
+                fetch(URL+'newtodo.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -55,7 +57,7 @@
         // Function to fetch and display all todo items
         function fetchTodoItems() {
             // Fetch the todo items from the endpoint
-            fetch('http://localhost:8888/kodego/fetchtodos.php')
+            fetch(URL+'fetchtodos.php')
             .then(response => response.json())
             .then(data => {
                 
@@ -83,7 +85,7 @@
         // Function to mark a todo item as complete
         function markComplete(todoId){
             // Send a GET request to mark the todo item as complete
-            fetch(`http://localhost:8888/kodego/completetodo.php?id=${todoId}`)
+            fetch(URL+`completetodo.php?id=${todoId}`)
             .then(response => {
                 fetchTodoItems();
             });
