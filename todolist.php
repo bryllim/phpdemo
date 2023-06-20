@@ -63,11 +63,29 @@
                 todoList.innerHTML = ''; // Clear the todo list
 
                 data.forEach(todoItem => {
-                    todoList.innerHTML += `<div class="alert alert-light">
+
+                    if (todoItem.status === 'pending'){
+                        todoList.innerHTML += `<div class="alert alert-light">
+                                    <button type="button" class="btn btn-sm btn-success" onclick="markComplete(${todoItem.id})">✔</button>
                                     ${todoItem.title}
                                 </div>`;
+                    }else{
+                        todoList.innerHTML += `<div class="alert alert-success">
+                                    ${todoItem.title}
+                                </div>`;
+                    }
+                    
                 });
 
+            });
+        }
+
+        // Function to mark a todo item as complete
+        function markComplete(todoId){
+            // Send a GET request to mark the todo item as complete
+            fetch(`http://localhost:8888/kodego/completetodo.php?id=${todoId}`)
+            .then(response => {
+                fetchTodoItems();
             });
         }
     </script>

@@ -14,6 +14,7 @@ if($results->num_rows > 0){
         $todo = array(
             'id' => $row['id'],
             'title' => $row['title'],
+            'status' => $row['status'],
         );
         $todos[] = $todo;
     }

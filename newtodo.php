@@ -8,9 +8,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $data = json_decode(file_get_contents('php://input'), true);
 
     $title = $data['title'];
+    $status = 'pending';
 
-    $sql = "INSERT INTO todos (title)
-            VALUES ('$title')";
+    $sql = "INSERT INTO todos (title, status)
+            VALUES ('$title', '$status')";
 
     if($conn->query($sql)) {
         echo "Todo added!";
