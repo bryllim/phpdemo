@@ -24,6 +24,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 'success' => true,
                 'message' => 'Login successful!'
             );
+
+            $_SESSION['user_id'] = $row['id'];
+
         }else{
             $response = array(
                 'success' => false,

@@ -23,6 +23,18 @@
     </section>
     <script>
 
+    checkSession();
+
+    function checkSession() {
+        fetch("http://localhost:8888/kodego/backend/checksession.php")
+        .then(response => response.json())
+        .then(data => {
+            if(data.valid){
+                window.location.replace("home.php");
+            }
+        });
+    }
+
     const loginForm = document.querySelector("#loginForm");
     loginForm.addEventListener("submit", login);
 
@@ -46,7 +58,6 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert("Login successful!");
                         window.location.replace("home.php");
                     } else {
                         alert(data.message);
