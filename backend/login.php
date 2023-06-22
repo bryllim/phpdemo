@@ -7,11 +7,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $data = json_decode(file_get_contents('php://input'), true);
 
-    $username = $data['username'];
+    $email = $data['email'];
     $password = $data['password'];
 
-    // Check if the username exists
-    $sql = "SELECT * FROM users WHERE username = '$username'";
+    // Check if the email exists
+    $sql = "SELECT * FROM users WHERE email = '$email'";
     $result = $conn->query($sql);
 
     if($result->num_rows > 0){

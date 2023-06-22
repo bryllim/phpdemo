@@ -7,18 +7,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $data = json_decode(file_get_contents('php://input'), true);
 
-    $username = $data['username'];
+    $email = $data['email'];
+    $firstname = $data['firstname'];
+    $lastname = $data['lastname'];
+    $birthdate = $data['birthdate'];
     $password = $data['password'];
 
-    // Check if the username exists
-    $sql = "SELECT * FROM users WHERE username = '$username'";
+    // Check if the email exists
+    $sql = "SELECT * FROM users WHERE email = '$email'";
     $result = $conn->query($sql);
 
     if($result->num_rows === 0){
 
         $password = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
+        $sql = "INSERT INTO users (email, firstname, lastname, birthdate, password) VALUES ('$email', '$firstname', '$lastname', '$birthdate', '$password')";
         if($conn->query($sql)){
             $response = array(
                 'success' => true,
@@ -30,7 +33,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }else{
         $response = array(
             'success' => false,
-            'message' => 'Username already exists.'
+            'message' => 'Email already exists.'
         );
         echo json_encode($response);
     }

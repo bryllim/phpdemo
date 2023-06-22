@@ -3,6 +3,10 @@
 // Start the session
 session_start();
 
+// Prevent CORS policy errors
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: *');
+
 // Change this to your local settings
 $servername = "localhost";
 $username = "root";
