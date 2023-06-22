@@ -2,13 +2,15 @@ checkSession();
 
 let user;
 
+const endpoint = "http://localhost:8888/kodego/backend/";
+
 function checkSession() {
-  fetch("http://localhost:8888/kodego/backend/checksession.php")
+  fetch(endpoint+"checksession.php")
     .then((response) => response.json())
     .then((data) => {
       if (data.valid) {
         fetch(
-            `http://localhost:8888/kodego/backend/getuser.php?id=${data.user_id}`
+            endpoint+`getuser.php?id=${data.user_id}`
           )
             .then((response) => response.json())
             .then((data) => {
@@ -48,7 +50,7 @@ function login(event) {
   const email = document.querySelector("#email").value;
   const password = document.querySelector("#password").value;
 
-  fetch("http://localhost:8888/kodego/backend/login.php", {
+  fetch(endpoint+"login.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -80,7 +82,7 @@ function register(event) {
   const confirm_password = document.querySelector("#confirm_password").value;
 
   if (password === confirm_password) {
-    fetch("http://localhost:8888/kodego/backend/register.php", {
+    fetch(endpoint+"register.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -108,7 +110,7 @@ function register(event) {
 }
 
 function logout() {
-  fetch("http://localhost:8888/kodego/backend/logout.php")
+  fetch(endpoint+"logout.php")
     .then((response) => response.json())
     .then((data) => {
       alert(data.message);
