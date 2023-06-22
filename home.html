@@ -16,11 +16,24 @@
       <h1 class="fw-bold">Home</h1>
       <p>Welcome, <span id="name"></span></p>
       <button id="logout" class="btn btn-dark btn-sm">⃪ Logout</button>
+
+      <!-- Create New Post -->
+      <section class="rounded p-4 pb-5 mt-4 shadow">
+        <label for="newpost">What's on your mind?</label>
+        <input id="newpost" class="form-control" type="text">
+        <button id="newpost_btn" class="btn btn-primary btn-sm float-end mt-2">Post</button>
+      </section>
+
+      <!-- News Feed -->
+
+      <section id="newsfeed"></section>
+
     </section>
     <script src="api.js"></script>
     <script>
       checkLoggedInStatus();
       getUser();
+      getPosts();
     </script>
   </body>
 </html>

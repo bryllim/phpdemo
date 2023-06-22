@@ -8,11 +8,12 @@ function getCookie(name) {
 }
 
 function getUser() {
-    fetch(endpoint + "getuser.php?id=" + getCookie("user_id"))
+  fetch(endpoint + "getuser.php?id=" + getCookie("user_id"))
     .then((response) => response.json())
     .then((data) => {
-        document.querySelector("#name").innerHTML = data.user.firstname + " " + data.user.lastname;
-        console.log(data);
+      document.querySelector("#name").innerHTML =
+        data.user.firstname + " " + data.user.lastname;
+      console.log(data);
     });
 }
 
@@ -24,12 +25,12 @@ function checkSession() {
 }
 
 function checkLoggedInStatus() {
-    const userIDCookie = getCookie("user_id");
-    console.log(userIDCookie);
-    if (!userIDCookie) {
-      window.location.replace("login.html");
-    }
+  const userIDCookie = getCookie("user_id");
+  console.log(userIDCookie);
+  if (!userIDCookie) {
+    window.location.replace("login.html");
   }
+}
 
 // Store form variables
 
@@ -47,6 +48,50 @@ try {
   const logoutButton = document.querySelector("#logout");
   logoutButton.addEventListener("click", logout);
 } catch (e) {}
+
+try {
+  const newPostButton = document.querySelector("#newpost_btn");
+  newPostButton.addEventListener("click", newPost);
+} catch (e) {}
+
+// Post Functions
+function newPost() {
+  const postContent = document.querySelector("#newpost").value;
+  fetch(endpoint + "newpost.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      content: postContent,
+      user_id: getCookie("user_id"),
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      document.querySelector("#newpost").value = "";
+      getPosts();
+    });
+}
+
+function getPosts() {
+  fetch(endpoint + "getposts.php")
+    .then((response) => response.json())
+    .then((data) => {
+      let postHTML = "";
+      data.forEach((post) => {
+        postHTML += `
+            <div class="card mt-4">
+            <div class="card-body">
+              <p class="fw-bold">${post.firstname} ${post.lastname}</p>
+              <p>${post.content}</p>
+            </div>
+          </div>
+            `;
+      });
+      document.querySelector("#newsfeed").innerHTML = postHTML;
+    });
+}
 
 function login(event) {
   event.preventDefault();
@@ -121,8 +166,8 @@ function logout() {
   fetch(endpoint + "logout.php")
     .then((response) => response.json())
     .then((data) => {
-      alert(data.message); 
-      
+      alert(data.message);
+
       // Clear session cookies
       document.cookie = `user_id=''; expires=Thu, 18 Dec 1970 12:00:00 GMT`;
 
