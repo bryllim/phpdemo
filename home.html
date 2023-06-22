@@ -17,15 +17,10 @@
       <p>Welcome, <span id="name"></span></p>
       <button id="logout" class="btn btn-dark btn-sm">⃪ Logout</button>
     </section>
-    <script src="api.js">
+    <script src="api.js"></script>
+    <script>
       checkLoggedInStatus();
-      function checkLoggedInStatus() {
-        const userIDCookie = getCookie("user_id");
-        console.log(userIDCookie);
-        if (!userIDCookie) {
-          window.location.replace("login.html");
-        }
-      }
+      getUser();
     </script>
   </body>
 </html>

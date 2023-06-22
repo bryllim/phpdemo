@@ -11,8 +11,10 @@ $row = $result->fetch_assoc();
 
 $user = array(
     'id' => $row['id'],
-    'username' => $row['username'],
-    'password' => $row['password'],
+    'email' => $row['email'],
+    'firstname' => $row['firstname'],
+    'lastname' => $row['lastname'],
+    'birthdate' => $row['birthdate'],
 );
 
 $response = array(

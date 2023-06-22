@@ -7,14 +7,29 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(";").shift();
 }
 
+function getUser() {
+    fetch(endpoint + "getuser.php?id=" + getCookie("user_id"))
+    .then((response) => response.json())
+    .then((data) => {
+        document.querySelector("#name").innerHTML = data.user.firstname + " " + data.user.lastname;
+        console.log(data);
+    });
+}
+
 function checkSession() {
   const userIDCookie = getCookie("user_id");
-
   if (userIDCookie) {
     window.location.replace("home.html");
   }
-  
 }
+
+function checkLoggedInStatus() {
+    const userIDCookie = getCookie("user_id");
+    console.log(userIDCookie);
+    if (!userIDCookie) {
+      window.location.replace("login.html");
+    }
+  }
 
 // Store form variables
 
