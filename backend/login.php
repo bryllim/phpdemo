@@ -22,7 +22,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if(password_verify($password, $hashedPassword)){
             $response = array(
                 'success' => true,
-                'message' => 'Login successful!'
+                'message' => 'Login successful!',
+                'user_id' => $row['id'],
+                'email' => $row['email'],
+                'firstname' => $row['firstname'],
+                'lastname' => $row['lastname'],
+                'birthdate' => $row['birthdate'],
             );
 
             $_SESSION['user_id'] = $row['id'];

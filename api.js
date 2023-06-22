@@ -1,47 +1,37 @@
-checkSession();
-
-let user;
-
 const endpoint = "http://localhost:8888/kodego/backend/";
 
+// Cookie Functions --------------------------------
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
 function checkSession() {
-  fetch(endpoint+"checksession.php")
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.valid) {
-        fetch(
-            endpoint+`getuser.php?id=${data.user_id}`
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              user = data.user;
-              document.querySelector("#name").innerHTML = user.firstname + " " + user.lastname;
-            });
-      } else {
-        // window.location.replace("login.html");
-      }
-    });
+  const userIDCookie = getCookie("user_id");
+
+  if (userIDCookie) {
+    window.location.replace("home.html");
+  }
+  
 }
 
 // Store form variables
 
 try {
-    const loginForm = document.querySelector("#loginForm");
-    loginForm.addEventListener("submit", login);
-}catch(e) {
-}
+  const loginForm = document.querySelector("#loginForm");
+  loginForm.addEventListener("submit", login);
+} catch (e) {}
 
 try {
-    const registrationForm = document.querySelector("#registrationForm");
-    registrationForm.addEventListener("submit", register);
-}catch(e) {
-}
+  const registrationForm = document.querySelector("#registrationForm");
+  registrationForm.addEventListener("submit", register);
+} catch (e) {}
 
 try {
-    const logoutButton = document.querySelector("#logout");
-    logoutButton.addEventListener("click", logout);
-}catch(e) {
-}
+  const logoutButton = document.querySelector("#logout");
+  logoutButton.addEventListener("click", logout);
+} catch (e) {}
 
 function login(event) {
   event.preventDefault();
@@ -50,7 +40,7 @@ function login(event) {
   const email = document.querySelector("#email").value;
   const password = document.querySelector("#password").value;
 
-  fetch(endpoint+"login.php", {
+  fetch(endpoint + "login.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -63,6 +53,9 @@ function login(event) {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
+        // Store user session in a cookie
+        document.cookie = `user_id=${data.user_id}; expires=Thu, 18 Dec 2099 12:00:00 GMT`;
+
         window.location.replace("home.html");
       } else {
         alert(data.message);
@@ -82,7 +75,7 @@ function register(event) {
   const confirm_password = document.querySelector("#confirm_password").value;
 
   if (password === confirm_password) {
-    fetch(endpoint+"register.php", {
+    fetch(endpoint + "register.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -110,10 +103,14 @@ function register(event) {
 }
 
 function logout() {
-  fetch(endpoint+"logout.php")
+  fetch(endpoint + "logout.php")
     .then((response) => response.json())
     .then((data) => {
-      alert(data.message);
+      alert(data.message); 
+      
+      // Clear session cookies
+      document.cookie = `user_id=''; expires=Thu, 18 Dec 1970 12:00:00 GMT`;
+
       window.location.replace("login.html");
     });
 }
